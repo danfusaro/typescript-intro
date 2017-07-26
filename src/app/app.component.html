@@ -1,3 +1,40 @@
-<h1>
-  {{title}}
-</h1>
+<div style="font-size:20px">
+  <h4>
+    {{title}}
+  </h4>
+  <div style="padding-bottom:50px">
+    <div *ngFor="let message of messages">
+      <div>{{typeToString(message.type)}}</div>
+      <span style="color:#0099ee">{{message.date.toString()}}: {{message.text}}</span>
+      <button *ngIf="!message.sent" (click)="message.send()">Send</button>
+      <span *ngIf="message.sent">Sent!</span>
+    </div>
+  </div>
+  <label>Message Type</label>
+  <select #typeInput (change)="switchType(typeInput.value)">
+  <option [value]="types.text">Text</option>
+  <option [value]="types.slack">Slack</option>
+  <option [value]="types.twitter">Twitter</option>
+</select>
+  <div *ngIf="type==types.text">
+    <label>Phone number</label>
+    <input #inputPhone>
+    <label>Text message</label>
+    <input #inputMessage>
+    <button (click)="submitText(inputMessage.value, inputPhone.value);inputMessage.value='';inputPhone.value='';inputPhone.focus();">Submit</button>
+  </div>
+  <div *ngIf="type==types.slack">
+    <label>Channel</label>
+    <input #inputChannel>
+    <label>Text message</label>
+    <input #inputMessage>
+    <button (click)="submitSlack(inputMessage.value, inputChannel.value);inputMessage.value='';inputChannel.value='';inputChannel.focus();">Submit</button>
+  </div>
+  <div *ngIf="type==types.twitter">
+    <label>Mention</label>
+    <input #inputMention>
+    <label>Text message</label>
+    <input #inputMessage>
+    <button (click)="submitTwitter(inputMessage.value, inputMention.value);inputMessage.value='';inputMention.value='';inputMention.focus();">Submit</button>
+  </div>
+</div>
